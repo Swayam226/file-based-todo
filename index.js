@@ -27,7 +27,7 @@ app.post('/todos', function (req, res) {
         const todo = { id: todosArray.length, title: title, isCompleted: isCompleted };
         todosArray.push(todo);
         fs.writeFileSync('todos.json', JSON.stringify(todosArray));
-        res.status(201).todo;
+        res.status(201).json(todo);
     })
 })
 
