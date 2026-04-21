@@ -51,4 +51,24 @@ app.patch('/todos/:id', function (req, res) {
     })
 })
 
+app.delete('/todos/:id', function (req, res) {
+    fs.readFile('todos.json', 'utf-8', function (err, data) {
+        if (err) {
+            res.status(404).json({ message: "file not found" });
+            return;
+        }
+        const todosArray = JSON.parse(data);
+        const idString = req.params.id;
+        const id = parseInt(idString);
+        const index = todosArray.findIndex(todo => todo.id === id);
+        if (index == -1) {
+            res.status(404).json({ message: "todo not found" });
+            return;
+        }
+        todosArray.splice(index, 1);
+        fs.writeFileSync('todos.json', JSON.stringify(todosArray));
+        res.status(200).json({ message: "task deleted succesfully" });
+    })
+})
+
 app.listen(3000);
